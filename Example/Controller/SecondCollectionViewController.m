@@ -11,7 +11,7 @@
 #import "CollectionReusableView.h"
 #import "XPCollectionViewWaterfallFlowLayout.h"
 
-@interface SecondCollectionViewController ()
+@interface SecondCollectionViewController ()<XPCollectionViewWaterfallFlowLayoutDataSource>
 
 @property (nonatomic, strong) NSMutableArray<NSMutableArray<NSNumber *> *> *datas;
 
@@ -106,4 +106,10 @@ static NSString * const footerReuseIdentifier = @"Footer";
     return 40.0;
 }
 
+-(BOOL)collectionView:(UICollectionView *)collectionView layout:(XPCollectionViewWaterfallFlowLayout *)collectionViewLayout sectionHeadersPinAtSection:(NSInteger)section {
+    return section == 3;
+}
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(XPCollectionViewWaterfallFlowLayout *)collectionViewLayout sectionHeadersPinTopSpaceAtSection:(NSInteger)section {
+    return section==3 ? 100:0;
+}
 @end

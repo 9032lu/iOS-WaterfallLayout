@@ -148,24 +148,47 @@
     }];
     
     // Header view hover.
-    if (_sectionHeadersPinToVisibleBounds) {
-        for (UICollectionViewLayoutAttributes *attriture in result) {
-            if (![attriture.representedElementKind isEqualToString:UICollectionElementKindSectionHeader]) continue;
-            NSInteger section = attriture.indexPath.section;
-            UIEdgeInsets contentInsetOfSection = [self contentInsetForSection:section];
+//    if (_sectionHeadersPinToVisibleBounds) {
+//        for (UICollectionViewLayoutAttributes *attriture in result) {
+//            if (![attriture.representedElementKind isEqualToString:UICollectionElementKindSectionHeader]) continue;
+//            NSInteger section = attriture.indexPath.section;
+//            UIEdgeInsets contentInsetOfSection = [self contentInsetForSection:section];
+//            NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:section];
+//            UICollectionViewLayoutAttributes *itemAttribute = [self layoutAttributesForItemAtIndexPath:firstIndexPath];
+//            if (!itemAttribute) continue;
+//            CGFloat headerHeight = CGRectGetHeight(attriture.frame);
+//            CGRect frame = attriture.frame;
+//            frame.origin.y = MIN(
+//                                 MAX(self.collectionView.contentOffset.y, CGRectGetMinY(itemAttribute.frame)-headerHeight-contentInsetOfSection.top),
+//                                 CGRectGetMinY(itemAttribute.frame)+[_heightOfSections[section] floatValue]
+//                                 );
+//            attriture.frame = frame;
+//            attriture.zIndex = (NSIntegerMax/2)+section;
+//        }
+//    }
+    for (UICollectionViewLayoutAttributes *attriture in result) {
+        if (![attriture.representedElementKind isEqualToString:UICollectionElementKindSectionHeader]) continue;
+        NSInteger section = attriture.indexPath.section;
+        BOOL sectionHeadersPinTVisibleBounds = NO;
+        if (self.dataSource && [self.dataSource respondsToSelector:@selector(collectionView:layout:sectionHeadersPinAtSection:)]) {
+            sectionHeadersPinTVisibleBounds = [self.dataSource collectionView:self.collectionView layout:self sectionHeadersPinAtSection:section];
+        }
+        CGFloat sectionHeaderViewHoveringTopEdging = 0;
+        if (self.dataSource && [self.dataSource respondsToSelector:@selector(collectionView:layout:sectionHeadersPinTopSpaceAtSection:)]) {
+            sectionHeaderViewHoveringTopEdging = [self.dataSource collectionView:self.collectionView layout:self sectionHeadersPinTopSpaceAtSection:section];
+        }
+        UIEdgeInsets sectionInset = [self contentInsetForSection:section];
+        if (sectionHeadersPinTVisibleBounds) {
             NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:section];
             UICollectionViewLayoutAttributes *itemAttribute = [self layoutAttributesForItemAtIndexPath:firstIndexPath];
-            if (!itemAttribute) continue;
-            CGFloat headerHeight = CGRectGetHeight(attriture.frame);
             CGRect frame = attriture.frame;
-            frame.origin.y = MIN(
-                                 MAX(self.collectionView.contentOffset.y, CGRectGetMinY(itemAttribute.frame)-headerHeight-contentInsetOfSection.top),
-                                 CGRectGetMinY(itemAttribute.frame)+[_heightOfSections[section] floatValue]
-                                 );
+            frame.origin.y = MIN(MAX(self.collectionView.contentOffset.y + sectionHeaderViewHoveringTopEdging, CGRectGetMinY(itemAttribute.frame)-CGRectGetHeight(attriture.frame)-sectionInset.top),
+                                 CGRectGetMinY(itemAttribute.frame)+[_heightOfSections[section] floatValue]);
             attriture.frame = frame;
             attriture.zIndex = (NSIntegerMax/2)+section;
         }
     }
+
     
     return result;
 }

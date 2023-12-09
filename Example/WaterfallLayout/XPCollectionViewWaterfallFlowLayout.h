@@ -16,7 +16,7 @@
 
 @interface XPCollectionViewWaterfallFlowLayout : UICollectionViewLayout
 
-@property (nonatomic, weak) IBOutlet id<XPCollectionViewWaterfallFlowLayoutDataSource> dataSource;
+@property (nonatomic, weak) id<XPCollectionViewWaterfallFlowLayoutDataSource> dataSource;
 
 @property (nonatomic, assign) CGFloat minimumLineSpacing; // default 0.0
 @property (nonatomic, assign) CGFloat minimumInteritemSpacing; // default 0.0
@@ -48,5 +48,14 @@
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(XPCollectionViewWaterfallFlowLayout*)layout referenceHeightForHeaderInSection:(NSInteger)section;
 /// Return per section footer view height.
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(XPCollectionViewWaterfallFlowLayout*)layout referenceHeightForFooterInSection:(NSInteger)section;
+
+/*
+ 是否头悬停
+ */
+- (BOOL)collectionView:(UICollectionView *)collectionView layout:(XPCollectionViewWaterfallFlowLayout *)collectionViewLayout sectionHeadersPinAtSection:(NSInteger)section;
+/*
+ 头悬停上部距离
+ */
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(XPCollectionViewWaterfallFlowLayout *)collectionViewLayout sectionHeadersPinTopSpaceAtSection:(NSInteger)section;
 
 @end
