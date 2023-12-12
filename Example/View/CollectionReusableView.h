@@ -11,5 +11,6 @@
 @interface CollectionReusableView : UICollectionReusableView
 
 @property(nonatomic, strong) UILabel *textLabel;
-
+/// <#Description#>
+@property (nonatomic, copy) void (^btnClickBlock)(NSInteger index);
 @end

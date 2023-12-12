@@ -23,8 +23,22 @@
         [_textLabel.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = YES;
         [_textLabel.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
         [_textLabel.heightAnchor constraintEqualToAnchor:self.heightAnchor].active = YES;
+        
+        for (NSInteger i = 0; i < 3; i ++) {
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [btn setTitle:[NSString stringWithFormat:@"btn-%ld",i] forState:UIControlStateNormal];
+            btn.frame = CGRectMake(10 + i* 65, 9, 60, 30);
+            btn.tag = i;
+            [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:btn];
+        }
     }
     return self;
 }
 
+- (void)btnClick:(UIButton *)sender {
+    if (self.btnClickBlock) {
+        self.btnClickBlock(sender.tag);
+    }
+}
 @end

@@ -137,7 +137,7 @@
         }];
     }];
     [_headerLayoutAttributes enumerateObjectsUsingBlock:^(UICollectionViewLayoutAttributes *attribute, NSUInteger idx, BOOL *stop) {
-        if (attribute.frame.size.height && CGRectIntersectsRect(rect, attribute.frame)) {
+        if (attribute.frame.size.height) {
             [result addObject:attribute];
         }
     }];
